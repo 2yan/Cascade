@@ -8,29 +8,38 @@ Created on Sun May 23 18:28:09 2021
 import sql
 
 
-nodes = []
 
 class Node: 
-    def __init__(self, index, description):
+    def __init__(self, index, description, _save_on_create= True ):
         self.id = str(index)
         self.description = str(description)
-        
-        index
-        self.children = set()
-        self.parents = set()
-        nodes.append(self)
+        if _save_on_create:
+            self.save()
         return 
     
     def add_child(self, other_node):
-        self.children.add(other_node)
-        other_node.parents.add(self)
-        self.save()
-        other_node.save()
-        return 
+        sql.save_connection(self.id, other_node.id)
+        return True
     
     def add_parent(self, other_node):
-        # THis needs to be implemented
-        return 
+        sql.save_connection(other_node.id, self.id)
+        return True
+    
+    
+    def get_children(self):
+        child_ids = sql.get_children(self.id)
+        children = []
+        for index in child_ids:
+            children.append(load_node_from_id(index))
+        return children
+    
+    def get_parents(self):
+        parent_ids = sql.get_parents(self.id)
+        parents = []
+        for index in parent_ids:
+            parents.append(load_node_from_id(index))
+        return parents
+         
     
     def __eq__(self, obj):
         return self.id == obj.id
@@ -43,18 +52,24 @@ class Node:
     
     def save(self):
         sql.save_node(self.id, self.description)
+        return True
         
-        
-        
+    def delete(self):
+        sql.delete_node(self.id)
+        return True
+    
 
-
+    
+def load_node_from_id(index):
+    data = sql.load_nodes(index)
+    n = Node(index, data[0][1])
+    return n
 
 
 def load_all_nodes():
-    data = sql.load_node_data()
+    data = sql.load_nodes()
     nodes = []
-    for index, vals in data.iterrows():
-        description = vals['description']
-        n = Node(index, description)
+    for row in data:
+        n = Node(row[0], row[1], _save_on_create=False)
         nodes.append(n)
     return nodes
