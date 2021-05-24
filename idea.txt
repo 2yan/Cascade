@@ -1,0 +1,14 @@
+
+
+Potential Ideas
+
+- User Interface:
+
+Click on Node to show children and parents with the top half of the node showing parents and the bottom half showing children?
+
+
+Requirements
+- Have an API for ingesting JSON Data as described in provided PDF
+- Track different data "Sources" each with connections. Connections are directional.
+- Store the provided node data
+- 
