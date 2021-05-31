@@ -2,7 +2,7 @@
 
 from flask import Flask
 import flask as f
-from . import objects 
+import node_manager 
 
 
 app = Flask(__name__)
@@ -24,13 +24,13 @@ def load_json(json_data):
         for node in nodes:
             iden = node['id']
             description = node.get('description', "")
-            n = objects.Node(iden, description)
+            n = node_manager.Node(iden, description)
             n.save()
     
         # Load all the links next
         for link in links:
-            source_node = objects.load_node_from_id(link['source'])
-            target_node = objects.load_node_from_id(link['target'])
+            source_node = node_manager.load_node_from_id(link['source'])
+            target_node = node_manager.load_node_from_id(link['target'])
     
             source_node.add_child(target_node)
     

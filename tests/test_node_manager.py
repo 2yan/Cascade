@@ -1,6 +1,12 @@
-import app_data.objects as objects
-from app_data.objects import Node
-from app_data import sql
+import sys
+import os
+sys.path.append(os.path.abspath('../Title'))
+
+import node_manager 
+from node_manager import Node
+import sql
+
+
 
 import os
 import pytest
@@ -76,8 +82,8 @@ def test_save():
 def test_load_all_nodes():
     n1 = Node(1, 'the one node')
     n2 = Node(2, 'The other Node')
-    assert n1 in objects.load_all_nodes()  
-    assert n2 in objects.load_all_nodes()  
+    assert n1 in node_manager.load_all_nodes()  
+    assert n2 in node_manager.load_all_nodes()  
    
     
 
@@ -85,7 +91,7 @@ def test_load_node_from_id():
     n1 = Node(1, 'the one node')
     n2 = Node(2, 'The other Node')
     """ Test loading one Node"""
-    one_node = objects.load_node_from_id(n1.id)
+    one_node = node_manager.load_node_from_id(n1.id)
     assert n1 == one_node
     assert n2 != one_node
     
@@ -94,19 +100,19 @@ def test_delete():
     n1 = Node(1, 'Parent')
     n2 = Node(2, 'Child')   
     
-    delete_me = objects.Node(3, 'Delete Me')
+    delete_me = node_manager.Node(3, 'Delete Me')
     n1.add_child(delete_me)
     n2.add_parent(delete_me)
     
     # Check Deleting 
     assert delete_me.delete() == True
 
-    assert delete_me not in objects.load_all_nodes()
+    assert delete_me not in node_manager.load_all_nodes()
     # Check if parent/child relationships are removed
     assert delete_me not in n1.get_children()
     assert delete_me not in n2.get_parents()
     # Ensure only the appropriate node is deleted
-    assert n1 in objects.load_all_nodes()
+    assert n1 in node_manager.load_all_nodes()
 
     
 def test_get_upstream():

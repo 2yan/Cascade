@@ -1,5 +1,10 @@
+
+
 import os
-from app_data import sql
+import sys
+sys.path.append(os.path.abspath('./app_data'))
+
+import sql
 import pytest
 
 

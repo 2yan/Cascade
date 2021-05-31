@@ -1,8 +1,12 @@
+import sys
+import os
+sys.path.append(os.path.abspath('./app_data'))
 
-from app_data import main
-import app_data.objects as objects
-from app_data.objects import sql
-#from app_data.objects import Node
+
+import main
+import node_manager 
+import sql
+
 import json
 import pytest
 import os
@@ -58,7 +62,7 @@ def test_api():
     example_data = json.loads(example_data)
     main.load_json(example_data)
     
-    nodes = objects.load_all_nodes()
+    nodes = node_manager.load_all_nodes()
     assert len(nodes) == 3 # Ensure all Nodes are loaded
     
     for node in nodes:
@@ -66,9 +70,9 @@ def test_api():
         assert node.description == 'This is the description for source ' + node.id
         
     
-    a = objects.load_node_from_id('a') 
-    b = objects.load_node_from_id('b')
-    c = objects.load_node_from_id('c')
+    a = node_manager.load_node_from_id('a') 
+    b = node_manager.load_node_from_id('b')
+    c = node_manager.load_node_from_id('c')
     
     assert a in b.get_parents()
     assert b in c.get_parents()
