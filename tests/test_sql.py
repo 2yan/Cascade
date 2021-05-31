@@ -1,13 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun May 23 21:15:12 2021
-
-@author: ryan
-"""
-
 import os
-import sql
+from app_data import sql
 import pytest
 
 
@@ -22,9 +14,6 @@ def run_around_tests():
     yield
     os.remove('test_database.db')
     
-    
-
-
 
 def test_create_database():
     # See if databases are created
@@ -62,6 +51,13 @@ def test_load_node_data():
 def test_save_connection():
     # Check if saving connection works
     assert sql.save_connection(1, 2) == True
+    # No self referencing
+    try:
+        sql.save_connection(1,1)
+        assert True == False # Should not allow saving a self connection
+    except Exception as e:
+        pass
+    
     
 def test_get_children():
     sql.save_connection(1, 2)

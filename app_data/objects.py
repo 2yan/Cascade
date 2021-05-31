@@ -5,7 +5,7 @@ Created on Sun May 23 18:28:09 2021
 
 @author: ryan
 """
-import sql
+from .import sql
 
 
 
@@ -42,7 +42,10 @@ class Node:
          
     
     def __eq__(self, obj):
-        return self.id == obj.id
+        try:
+            return self.id == obj.id
+        except AttributeError:
+            return False
     
     def __hash__(self):
         return hash(self.id)
@@ -58,7 +61,34 @@ class Node:
         sql.delete_node(self.id)
         return True
     
-
+    def get_upstream(self, ignore_nodes = []):
+        
+        ignore_nodes.append(self)
+            
+        result = []
+        parents = self.get_parents()
+        for parent in parents:
+            if parent not in ignore_nodes:
+                result.append(parent)
+                others = parent.get_upstream(ignore_nodes)
+                result.extend(others)
+            
+        return result
+    
+    
+    def get_downstream(self, ignore_nodes = []):
+        ignore_nodes.append(self)
+            
+        result = []
+        children = self.get_children()
+        
+        for child in children:
+            if child not in ignore_nodes:
+                result.append(child)
+                others = child.get_downstream(ignore_nodes)
+                result.extend(others)
+            
+        return result
     
 def load_node_from_id(index):
     data = sql.load_nodes(index)
