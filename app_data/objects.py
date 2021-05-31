@@ -5,7 +5,7 @@ Created on Sun May 23 18:28:09 2021
 
 @author: ryan
 """
-from .import sql
+from . import sql
 
 
 

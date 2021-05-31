@@ -2,7 +2,7 @@
 
 from flask import Flask
 import flask as f
-import app_data.objects as objects 
+from . import objects 
 
 
 app = Flask(__name__)
