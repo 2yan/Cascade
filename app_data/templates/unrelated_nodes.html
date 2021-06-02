@@ -1,0 +1,10 @@
+
+{% for n in nodes %}
+    <li id='{{n.id}}' class="list-group-item parent">  {{ n.id }}
+        <span class="show_on_parent_hover">   
+            <button class="btn btn-sm btn-info" hx-get="/get_relationship_page" hx-vals='{"index": "{{ n.id }}" }' hx-target="#page-contents" hx-trigger="click" hx-indicator=".htmx-indicator" href="#">Relationships</button>
+        </span>    
+    </li>
+    
+{% endfor %}
+

@@ -1,0 +1,39 @@
+<table class="table table-sm table-hover pt-3">
+    <thead>
+    <tr>
+      <th>Table Name  </th>
+      <th>Description </th>
+      <th>     </th>
+    </tr>
+    </thead>
+    
+    <tbody id="search-results" >
+ 
+    {% for node in nodes %}  
+        
+        <tr id ="{{ node.id }}" class="parent {{ node.html_class }}">
+            <td>{{ node.id }}</td>
+            <td>{{ node.description }}</td>
+            <td > 
+                <div class="show_on_parent_hover text-right">   
+                
+    
+                    <!-- Relationship Button-->
+
+                    <button class="btn btn-sm btn-info" hx-get="/get_relationship_page" hx-vals='{"index": "{{ node.id }}" }' hx-target="#page-contents" hx-trigger="click" hx-indicator=".htmx-indicator" href="#">Relationships</button>
+
+    
+    
+                    <!-- EDIT AND DELETE BUTTONS -->
+                    <button class="btn btn-sm btn-warning" onClick="edit_node_button('{{ node.id }}', '{{ node.description }} ')" data-toggle="modal" data-target="#modal"> Edit </button>
+                    <button class="btn btn-sm btn-danger" onClick="delete_node('{{ node.id }}')"> X </button>
+                <div>
+                    
+            </td>
+        </tr>
+        
+    {% endfor %}
+
+   </tbody>
+</table>
+

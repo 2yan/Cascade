@@ -1,0 +1,18 @@
+
+
+
+
+
+
+
+
+
+
+
+.show_on_parent_hover {
+  visibility: hidden;
+}
+
+.parent:hover .show_on_parent_hover {
+  visibility: visible;
+}

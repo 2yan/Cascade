@@ -1,0 +1,134 @@
+
+
+
+
+
+
+
+
+<div class = "container">
+
+    <div class = "row">
+        <div class="col">
+            <div class="row">
+                
+                <span class="col"> <h3 > Direct {{ kind.title() }} </h3>  </span>
+                
+                <span class="col"> <a href="#" class="btn btn-primary btn-sm" role="button"
+                        hx-get="/show_all_related" 
+                        hx-vals='{"index": "{{ node.id }}", "kind":"{{ kind }}" }'
+                        hx-trigger="click" 
+                        hx-target="#all_related_items" 
+                        hx-swap="innerHTML"
+                        hx-indicator=".htmx-indicator">Show All {{ kind.title() }}</a> </span>
+                
+            </div>
+                <ul id="related_nodes" class="list-group">
+                {% for n in relationships %}
+                    <li id='{{n.id}}'class="list-group-item parent"> {{ n.id }}
+                    <span class="show_on_parent_hover">   
+                        <button class="btn btn-sm btn-info" hx-get="/get_relationship_page" hx-vals='{"index": "{{ n.id }}" }' hx-target="#page-contents" hx-trigger="click" hx-indicator=".htmx-indicator" href="#">Relationships</button>
+                    </span>                  
+                     </li>
+                {% endfor %}
+                </ul>
+                
+                
+        <div id="all_related_items"> 
+
+        </div>
+        
+        </div>
+    
+
+    
+        <div class="col">
+        
+            <h3> Search Non-{{ kind.title() }} </h3>
+            <input class="form-control ring-blue focus:ring-blue-600 " type="text" 
+                       name="search_text" placeholder="Begin Typing To Search Tables..." 
+                       hx-post="/search_unrelated" 
+                       hx-vals='{"index": "{{ node.id }}", "kind":"{{ kind }}" }'
+                       hx-trigger="keyup changed delay:500ms" 
+                       hx-target="#unrelated_nodes" 
+                       hx-indicator=".htmx-indicator"
+                       id="search_bar">
+                       
+            <ul id="unrelated_nodes" class="list-group">  
+            
+        </div>
+        
+    </div>
+</div>
+
+
+<script>
+related_nodes = document.getElementById('related_nodes')
+new Sortable(related_nodes, {
+    group: 'shared', 
+    animation: 150,
+    onAdd: function (evt) {
+
+        	element = evt.item
+        	element.classList.remove("list-group-item-danger")
+        	element.classList.remove("list-group-item-success")
+        	element.classList.remove("list-group-item-dark")
+        	element.classList.add("list-group-item-light")
+
+        data = {'source_node_id':'{{ node.id }}',
+                'target_node_id':element.id, 
+                'kind': '{{ kind }}'}
+        console.log(data)
+
+        $.post( "/add_relationship", data)
+            .done(function() {
+                element.classList.remove("list-group-item-light")
+                element.classList.add("list-group-item-success")
+            })
+            .fail(function() {
+                element.classList.remove("list-group-item-light")
+                element.classList.add("list-group-item-danger")
+                
+              })
+  
+	}
+
+});
+
+
+unrelated_nodes = document.getElementById('unrelated_nodes')
+new Sortable(unrelated_nodes, {
+    group: 'shared', 
+    animation: 150,
+        onAdd: function (evt) {
+
+        	element = evt.item
+        	element.classList.remove("list-group-item-danger")
+        	element.classList.remove("list-group-item-success")
+        	element.classList.remove("list-group-item-dark")
+        	element.classList.add("list-group-item-light")
+
+        data = {'source_node_id':'{{ node.id }}',
+                'target_node_id':element.id, 
+                'kind': '{{ kind }}'}
+        console.log(data)
+
+        $.post( "/remove_relationship", data)
+            .done(function() {
+                element.classList.remove("list-group-item-light")
+                element.classList.add("list-group-item-dark")
+            })
+            .fail(function() {
+                element.classList.remove("list-group-item-light")
+                element.classList.add("list-group-item-danger")
+                
+              })
+  
+	}
+});
+
+
+
+
+
+</script>

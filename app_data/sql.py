@@ -7,6 +7,9 @@ database_name = 'database.db'
 
 
 def do_sql(query, args = ()):
+    if type(args) == str:
+        args = (args,)
+        
     con = sqlite3.connect(database_name)
     cur = con.cursor()
     cur.execute(query, args)
@@ -14,6 +17,8 @@ def do_sql(query, args = ()):
     con.close()
 
 def read_sql(query, args = ()):
+    if type(args) == str:
+        args = (args,)
     con = sqlite3.connect(database_name)
     cur = con.cursor()
     cur.execute(query, args)
@@ -43,7 +48,14 @@ def create_database():
     """
     do_sql(query)
     
+def delete_connection(parent_id, child_id):
+    query = """
+    DELETE FROM Connection
+    where parent_id == ?
+    and child_id == ?"""
+    do_sql(query, (parent_id, child_id))
     
+    return 
 
 def save_node(index, description):
     query = """
@@ -123,6 +135,8 @@ def delete_node(index):
     return 
 
 def search_nodes(text):
+    if not text:
+        text = ""
     text = '%' + text + '%'
     text = text.lower()
     
@@ -130,6 +144,7 @@ def search_nodes(text):
     select * from Node 
     where id like ?
     or description like ?
+    order by id
     """
     data = read_sql(query, (str(text), str(text)))
     return data
