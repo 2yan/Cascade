@@ -4,8 +4,7 @@ from flask import Flask
 import flask as f
 import node_manager 
 import sql
-import time
-
+import json
 
 sql.create_database()
 app = Flask(__name__)
@@ -14,22 +13,78 @@ app = Flask(__name__)
 def hello_world():
     return f.render_template('home.html') 
 
-# Need to assign this to a button on the site as well. 
+
+@app.route('/upload', methods = ['POST'])
+def upload():
+    message = False
+    progress = False
+    
+    if 'file' not in f.request.files:
+        message = "Please Choose a File"
+        progress = '0'
+    else:
+        file = f.request.files['file']
+        if file.filename == '':
+            message = "File Not Selected"
+            progress = "0"
+        else:
+            data = file.read()
+            failed = False
+            try:
+                json_data =  json.loads(data)
+                
+            except Exception as E:
+                message = 'Failed! Due to Malformed JSON data.'
+                progress = "0"
+                failed = True
+                
+
+            if not(failed):
+                uploaded = load_json(json_data)
+                progress = str(uploaded)
+                message = file.filename + ' has been uploaded'
+    
+    
+    html = """
+    <label class="form-label mr-1 form-text text-muted" for="customFile">
+    """ + message + """
+                <progress class="ml-2" id='progress' value='""" + progress + """' max='100'></progress>
+                </label>
+                <input type="file" name="file" class="form-control" id="customFile" />
+                <input type="submit" value="Submit" class="btn btn-info">
+            
+            
+            
+            <script>
+                htmx.on('#form', 'htmx:xhr:progress', function(evt) {
+                  htmx.find('#progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
+                });
+            </script>
+    
+    """
+    
+    
+    return html
+
+
 def load_json(json_data):
     # Currently saves data on create
     # Will overwrite data if the node already exists
 
     nodes = json_data.get('nodes', [])
     links = json_data.get('links', [])
+    total = len(nodes) + len(links)
+    i = 0
     
     try:
-    
+        
         # Load all the nodes first
         for node in nodes:
             iden = node['id']
             description = node.get('description', "")
             n = node_manager.Node(iden, description)
             n.save()
+            i = i + 1
     
         # Load all the links next
         for link in links:
@@ -37,16 +92,12 @@ def load_json(json_data):
             target_node = node_manager.load_node_from_id(link['target'])
     
             source_node.add_child(target_node)
+            i = i + 1
     
-        return f.Response(str({'status':'good'}), status=200, mimetype='application/json')
+        return 100
 
-    except Exception as e:
-
-        text = str(e)
-        error_json = {'status':'Bad Request', 
-         'Error Code': text}
-        
-        return f.Response(str(error_json), status = 400, mimetype= 'application/json')
+    except Exception as e:        
+        return int((i/total) * 100)
         
 @app.route('/search', methods = ['POST'])
 def search():
@@ -208,9 +259,15 @@ def show_all_related():
     for x in result:
         app.logger.info(x)
         
-        
-    return f.render_template('indirectly_related_nodes.html', nodes = result)
+    node_count = len(result)
+    return f.render_template('indirectly_related_nodes.html', nodes = result, kind = kind, node_count = node_count)
     
     
+
+@app.route('/get_help')
+def get_help():
+    
+    return f.render_template('Help.html')
+
 if __name__ == "__main__":
         app.run(debug = True)

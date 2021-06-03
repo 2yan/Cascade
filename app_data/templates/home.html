@@ -35,7 +35,7 @@
 
 
     
-    <div class="container py-5">
+    <div class="container py-5 ">
     
         <h1 class="d-flex align-items-center justify-content-center"> Data Dictionary </h1>
     
@@ -60,22 +60,57 @@
 
 
         
-        <div class="mt-3">
+        <div class="form-inline align-items-end d-flex mt-3">
             <!-- Add a New Table Button-->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal"
+            <button type="button" class="btn btn-primary mr-1" data-toggle="modal" data-target="#modal"
                     onClick= "add_node_button()">
-            Add New Table
+            Add Data Source
             </button>
             
             <!-- Search All Results -->
-            <button type="button" class="btn btn-primary"
+            <button type="button" class="btn btn-primary mr-1"
             hx-post="/search"
             hx-trigger="click delay:200ms"
             hx-target="#page-contents" 
             hx-indicator=".htmx-indicator"
             onClick()="clear_search_bar_text()">
-            Show All Tables
+            Show All Data Sources
             </button>
+            
+            <button type="button" class="btn btn-info mr-auto"
+            hx-get="/get_help"
+            hx-trigger="click"
+            hx-target="#page-contents" 
+            hx-indicator=".htmx-indicator"
+            >
+                Need Help?
+            </button>
+            
+            
+            <form id="file_upload" class ="p-2 bd-highlight"  hx-encoding='multipart/form-data' hx-post='/upload'>
+                <label class="form-label mr-1 form-text text-muted" for="customFile">Upload JSON File
+                <progress class="ml-2" id='progress' value='0' max='100'></progress>
+                </label>
+                <input type="file" name="file" class="form-control" id="customFile" />
+                <input type="submit" value="Submit" class="btn btn-info">
+            
+            
+            
+            <script>
+                htmx.on('#form', 'htmx:xhr:progress', function(evt) {
+                  htmx.find('#progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
+                });
+            </script>
+            
+            
+            </form>
+            
+            
+        
+
+            
+
+	
         </div>
 
     </div>

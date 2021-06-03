@@ -23,6 +23,7 @@
                         hx-indicator=".htmx-indicator">Show All {{ kind.title() }}</a> </span>
                 
             </div>
+            <hr>
                 <ul id="related_nodes" class="list-group">
                 {% for n in relationships %}
                     <li id='{{n.id}}'class="list-group-item parent"> {{ n.id }}
@@ -32,8 +33,8 @@
                      </li>
                 {% endfor %}
                 </ul>
-                
-                
+
+        <small class="text-muted"> Drag Data Sources above here to add {{ kind }}. </small>
         <div id="all_related_items"> 
 
         </div>
@@ -43,19 +44,23 @@
 
     
         <div class="col">
-        
+            <span class="form-inline">
             <h3> Search Non-{{ kind.title() }} </h3>
-            <input class="form-control ring-blue focus:ring-blue-600 " type="text" 
-                       name="search_text" placeholder="Begin Typing To Search Tables..." 
+            <input class="form-control ring-blue focus:ring-blue-600 ml-3 " type="text" 
+                       name="search_text" placeholder="Search Here ..." 
                        hx-post="/search_unrelated" 
                        hx-vals='{"index": "{{ node.id }}", "kind":"{{ kind }}" }'
                        hx-trigger="keyup changed delay:500ms" 
                        hx-target="#unrelated_nodes" 
                        hx-indicator=".htmx-indicator"
                        id="search_bar">
-                       
-            <ul id="unrelated_nodes" class="list-group">  
             
+             </span>
+             <hr>
+            <ul id="unrelated_nodes" class="list-group">  
+            </ul>
+
+            <small class="text-muted"> Drag {{ kind.title() }} above here to remove relationships. </small>
         </div>
         
     </div>

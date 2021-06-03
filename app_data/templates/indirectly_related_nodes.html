@@ -1,12 +1,26 @@
 
-{% for n in nodes %}
-    <li id='{{n.id}}' class="list-group-item parent  list-group-item-info">  {{ n.id }} 
-    
-        <span class="show_on_parent_hover">   
-            <button class="btn btn-sm btn-info" hx-get="/get_relationship_page" hx-vals='{"index": "{{ n.id }}" }' hx-target="#page-contents" hx-trigger="click" hx-indicator=".htmx-indicator" href="#">Relationships</button>
-        </span> 
-            
-        
-    </li>
-{% endfor %}
 
+{% if node_count > 0 %}
+
+<span class="col mt-5"> <h3 > Indirect {{ kind.title() }} </h3>
+<small class="text-muted"> These Data Sources can not be dragged. </small>
+
+      </span>
+    {% for n in nodes %}
+    
+        <li id='{{n.id}}' class="list-group-item parent  list-group-item-info">  {{ n.id }} 
+        
+            <span class="show_on_parent_hover">   
+                <button class="btn btn-sm btn-info" hx-get="/get_relationship_page" hx-vals='{"index": "{{ n.id }}" }' hx-target="#page-contents" hx-trigger="click" hx-indicator=".htmx-indicator" href="#">Relationships</button>
+            </span> 
+                
+            
+        </li>
+    {% endfor %}
+
+{% endif %}
+
+
+{% if node_count ==  0 %}
+<small class="text-muted"> No indirect {{ kind }} found </small>
+{% endif %}
