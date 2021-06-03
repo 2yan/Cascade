@@ -105,7 +105,7 @@ def search():
     nodes = node_manager.search_nodes(search_text)
 
     if len(nodes) == 0:
-        return '<h1> No Tables found </h1>'
+        return '<text class="text-muted"> No Tables found </text>'
     for node in nodes:
         node.html_class = ""
         if node.id.lower() == search_text.lower():
