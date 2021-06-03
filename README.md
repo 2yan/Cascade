@@ -6,7 +6,7 @@
 ### Installation
 Ensure Python 3 is Installed on the system. 
 ```
-    pip3 install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 ### Running
 Ideally this should be served using something secure, see: https://flask.palletsprojects.com/en/2.0.x/deploying/index.html
@@ -19,5 +19,5 @@ python3 app_data/main.py
 ## Running the Test Suite
 In the /Casecade directory.
 ```
-    pytest -v
+pytest -v
 ```
