@@ -10,6 +10,7 @@ pip3 install -r requirements.txt
 ```
 ### Running
 Ideally this should be served using something secure, see: https://flask.palletsprojects.com/en/2.0.x/deploying/index.html
+
 Locally this can be run using 
 ```
 python3 app_data/main.py
