@@ -14,7 +14,7 @@ class Node:
         index = str(index)
         index = index.replace(' ', '_')
         for letter in index.lower():
-            assert letter in 'abcdefghijklmnopqrstuvwxyz_1234567890$'
+            assert letter in ".-'?,abcdefghijklmnopqrstuvwxyz_1234567890$"
         
         self.id = str(index)
         if self.id.strip() == '':

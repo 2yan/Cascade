@@ -1,0 +1,30 @@
+    {
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+    {
+    "description": "This is the description for source a",
+    "id": "a"
+    },
+    {
+    "description": "This is the description for source b",
+    "id": "b"
+    },
+    {
+    "description": "This is the description for source c",
+    "id": "c"
+    }
+    ],
+    "links": [
+    {
+    "source": "a",
+    "target": "b"
+    },
+    {
+    "source": "b",
+    "target": "c"
+    }
+    ]
+    }
+    

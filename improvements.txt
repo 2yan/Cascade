@@ -1,13 +1,17 @@
 [Enhancements]
 - Add testing to the web Module (Currently the Node and SQL Library have extensive testing)
 - Make the Table added confirmation a message a notification that appears at the bottom of the screen and automatically disappears instead of requiring a further click from the user. 
-- When a new table is added, populate the list with the new table immediately. 
-- Add a Clear button 
+- When a new table is added, populate the search list on screen with the new table immediately. 
+
 - Made edit button an inline edit
 - [VERY TECHNICAL] Consider a refactor of the The relationship_results.html it might make more sense for it to sit in the relationship_page
 - Add Test for delete connection in both sql and node_manager
+
 - Add Better Error Message for Invalid Names
 - Add Filter for current parents/children nodes
-- Currently Names only allow alpha numeric and underscores
-- Show children and parents in a nested format
-- Doesn't automatically refresh "ALL Children" when a new child is added. 
+
+- Consider enhancement to make nodes "click to expand"
+
+- Doesn't automatically refresh the indrect nodes  when a new child or parent is added. 
+
+- Update Polling to get information from the backend to manage front end states.

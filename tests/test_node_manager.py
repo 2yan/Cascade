@@ -152,7 +152,7 @@ def test_get_upstream():
     b.add_child(f) #E is a child of an upstream element of D but not upstream of d,
     # it's on a different branch
     
-    upstream = d.get_upstream()
+    upstream = d.get_upstream([])
     for node in [a, b, c]:
         assert node in upstream # check logical upstream
         
@@ -161,8 +161,8 @@ def test_get_upstream():
     assert f not in upstream # Ensure branching F is not included
     
     d.add_child(a) # Create a recursive situation
-    upstream = d.get_upstream() # Recalculate the upstream data
-    assert d not in d.get_upstream() # Avoid self referencing and perma looping
+    upstream = d.get_upstream([]) # Recalculate the upstream data
+    assert d not in d.get_upstream([]) # Avoid self referencing and perma looping
     
     # Re-check previous data
     assert e not in upstream # E is a child of D
@@ -171,7 +171,7 @@ def test_get_upstream():
     
     # Create a different recursive situation
     c.add_child(a)
-    upstream = d.get_upstream()
+    upstream = d.get_upstream([])
 
 
 def test_get_downstream():
@@ -188,7 +188,7 @@ def test_get_downstream():
     d.add_child(e)
     d.add_parent(f)  # F is not downstream of a, though it is a parent to a child of a
     
-    downstream= a.get_downstream()
+    downstream= a.get_downstream([])
     
     for node in [b, c, d, e]:
         assert node in downstream # Check logical downstream
@@ -197,7 +197,7 @@ def test_get_downstream():
     assert a not in downstream # Ensure self is not in downstream
     
     e.add_child(a) # Create a recursive situation
-    downstream = a.get_downstream()
+    downstream = a.get_downstream([])
     assert a not in downstream # Avoid self referencign and perma looping
 
 

@@ -1,6 +1,2 @@
-networkx
 flask
-matplotlib
-seaborn
 pytest
-pandas
