@@ -218,7 +218,7 @@ def test_search():
     # Find only the good
     ans = node_manager.search_nodes('Good')
     assert len(ans) == 1
-    assert ans[0].id == 'database.No Name'
+    assert ans[0].id == 'database.No_Name'
     
     # All three should show up
     ans = node_manager.search_nodes('database')

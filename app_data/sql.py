@@ -58,6 +58,13 @@ def delete_connection(parent_id, child_id):
     return 
 
 def save_node(index, description):
+    index = str(index)
+    index = index.replace(' ', '_')
+    for letter in index.lower():
+        assert letter in ".-'?,abcdefghijklmnopqrstuvwxyz_1234567890$"
+    if index.strip().strip() == '':
+        raise ValueError("Index Can Not be Blank")
+            
     query = """
     REPLACE INTO Node (id, description)
     VALUES(

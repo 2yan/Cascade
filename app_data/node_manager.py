@@ -15,10 +15,11 @@ class Node:
         index = index.replace(' ', '_')
         for letter in index.lower():
             assert letter in ".-'?,abcdefghijklmnopqrstuvwxyz_1234567890$"
-        
-        self.id = str(index)
-        if self.id.strip() == '':
+        if index.strip().strip() == '':
             raise ValueError("Index Can Not be Blank")
+            
+        self.id = str(index)
+        
         self.description = str(description)
         if _save_on_create:
             self.save()
