@@ -108,14 +108,14 @@ def test_search():
     ans = sql.search_nodes('the')
     assert len(ans) == 3
     ans = dict(ans)
-    assert 'database.No Name' in ans.keys()
+    assert 'database.No_Name' in ans.keys()
     
     ans = dict(sql.search_nodes('ugly'))
     # Only the Ugly
     assert 'database.Tuco'in ans.keys()
     
     # Not the Bad
-    assert 'database.Angel Eyes' not in ans.keys()
+    assert 'database.Angel_Eyes' not in ans.keys()
     
     
     
