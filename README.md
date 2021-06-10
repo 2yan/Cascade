@@ -18,7 +18,7 @@ python3 app_data/main.py
 
 
 ## Running the Test Suite
-In the /Casecade directory.
+In the /Cascade directory.
 ```
 pytest -v
 ```
